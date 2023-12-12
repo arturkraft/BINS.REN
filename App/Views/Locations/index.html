@@ -1,0 +1,507 @@
+{% extends "base.html" %}
+
+{% block title %}{{ location }}{% endblock %}
+{% block apptitle %}{{ location }}{% endblock %}
+{% block appname %}{{ location }}{% endblock %}
+{% block jscss %}
+<link rel="manifest" href="./manifest.webmanifest" />
+<script async src="https://unpkg.com/pwacompat" crossorigin="anonymous"></script>
+{% include "scripts_styles_online.html" %}
+    <script>
+    {% if ends_with == 0 %}
+    window.history.replaceState(null, document.title, window.location.pathname+'/')
+    location.reload(true)
+    {% endif %}
+    // Check compatibility for the browser we're running this in
+        if("serviceWorker" in navigator) {
+            if(navigator.serviceWorker.controller) {
+                console.log("Active service worker found, no need to register")
+            } else {
+                // Register the service worker
+                navigator.serviceWorker
+                .register("sw.js?v={{ random(100, 999) }}", {
+                    scope: "./"
+                })
+                .then(function (reg) {
+                    console.log("Service worker has been registered for scope: " + reg.scope)
+                })
+            }
+            }
+
+            let displayMode = 'browser'
+            const mqStandAlone = '(display-mode: standalone)'
+            if (navigator.standalone || window.matchMedia(mqStandAlone).matches) {
+                displayMode = 'standalone'
+                console.log('yes, PWA')
+        } else {
+            console.log("not PWA")
+        }
+    </script>
+{% endblock %}
+
+{% block body %}
+
+            {% set first_row = true %}
+            {% set row_number = 1 %}
+            {% for key, value in sorted_bin_dates %}
+
+                {% if value.0 == "brown" %}
+                    {% set colour_one = '#966757' %}
+                {% elseif value.0 == "blue" %}
+                    {% set colour_one = '#007dbb' %}
+                {% elseif value.0 == "grey" %}
+                    {% set colour_one = '#737373' %}
+                {% else %}
+                    {% set colour_one = '#038831' %}   
+                {% endif %}
+
+                {% if value.1 != false %}
+                    {% if value.1 == "brown" %}
+                        {% set colour_two = '#966757' %}
+                    {% elseif value.1 == "blue" %}
+                        {% set colour_two = '#007dbb' %}
+                    {% elseif value.1 == "green" %}
+                        {% set colour_two = '#038831' %}
+                    {% elseif value.1 == "grey" %}
+                        {% set colour_two = '#737373' %}
+                    {% else %}
+                        {% set colour_two = false %}      
+                    {% endif %}
+                {% endif %}
+
+            {% if first_row == true %}
+
+<ul class="nav nav-pills mb-3 align-items-center justify-content-center" id="tabs-ul" role="tablist">
+    <li>
+        <div id="logo-replace">
+            {% if colour_two != false %}
+            <svg style="color: {{ colour_two }};" xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 448 512"><path d="M284.2 0C296.3 0 307.4 6.848 312.8 17.69L320 32H416C433.7 32 448 46.33 448 64C448 81.67 433.7 96 416 96H32C14.33 96 0 81.67 0 64C0 46.33 14.33 32 32 32H128L135.2 17.69C140.6 6.848 151.7 0 163.8 0H284.2zM31.1 128H416V448C416 483.3 387.3 512 352 512H95.1C60.65 512 31.1 483.3 31.1 448V128zM207 199L127 279C117.7 288.4 117.7 303.6 127 312.1C136.4 322.3 151.6 322.3 160.1 312.1L199.1 273.9V408C199.1 421.3 210.7 432 223.1 432C237.3 432 248 421.3 248 408V273.9L287 312.1C296.4 322.3 311.6 322.3 320.1 312.1C330.3 303.6 330.3 288.4 320.1 279L240.1 199C236.5 194.5 230.4 191.1 223.1 191.1C217.6 191.1 211.5 194.5 207 199V199z" fill="{{ colour_two }}"></path></svg>
+            {% endif %}
+            <svg style="color: {{ colour_one }};" xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 448 512"><path d="M284.2 0C296.3 0 307.4 6.848 312.8 17.69L320 32H416C433.7 32 448 46.33 448 64C448 81.67 433.7 96 416 96H32C14.33 96 0 81.67 0 64C0 46.33 14.33 32 32 32H128L135.2 17.69C140.6 6.848 151.7 0 163.8 0H284.2zM31.1 128H416V448C416 483.3 387.3 512 352 512H95.1C60.65 512 31.1 483.3 31.1 448V128zM207 199L127 279C117.7 288.4 117.7 303.6 127 312.1C136.4 322.3 151.6 322.3 160.1 312.1L199.1 273.9V408C199.1 421.3 210.7 432 223.1 432C237.3 432 248 421.3 248 408V273.9L287 312.1C296.4 322.3 311.6 322.3 320.1 312.1C330.3 303.6 330.3 288.4 320.1 279L240.1 199C236.5 194.5 230.4 191.1 223.1 191.1C217.6 191.1 211.5 194.5 207 199V199z" fill="{{ colour_one }}"></path></svg>
+        </div>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button  class="active abtn abtn-anim btn-primary" id="this-week-tab" data-bs-toggle="pill" data-bs-target="#this-week" type="button" role="tab" aria-controls="this-week" aria-selected="true">
+            <svg fill="currentColor" height="22" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 452.732 452.731" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M378.744,116.137c1.479-6.124,0.482-12.458-2.802-17.83c-4.318-7.069-11.846-11.29-20.135-11.29 c-4.33,0-8.578,1.197-12.284,3.462l-7.475,4.567l-7.233-9.077c-2.83-3.545-6.547-6.313-10.747-8.001L128.993,1.904 C125.852,0.641,122.553,0,119.185,0C108.39,0,98.811,6.471,94.779,16.488c-2.622,6.517-2.549,13.665,0.205,20.127 c2.754,6.464,7.86,11.467,14.377,14.087l151.152,60.81H99.619c-14.501,0-26.299,11.798-26.299,26.3 c0,14.502,11.798,26.3,26.299,26.3h13.271l38.042,228.7l-17.355,21.129c-6.05,7.363-6.344,17.877-0.715,25.567 c3.915,5.352,10.211,8.546,16.842,8.546c2.663,0,5.269-0.502,7.741-1.492l54.381-21.739h49.641 c11.619,17.354,31.115,27.908,52.221,27.908c34.657,0,62.854-28.195,62.854-62.854c0-30.374-21.458-55.811-50.354-61.608V164.111 h10.321c10.036,0,19.336-5.843,23.695-14.888c2.291-4.757,3.064-10.012,2.345-15.093l5.566-3.402 C373.49,127.443,377.266,122.261,378.744,116.137z M313.683,412.307c-12.364,0-22.424-10.062-22.424-22.429 c0-12.368,10.06-22.43,22.424-22.43c12.367,0,22.432,10.062,22.432,22.43C336.115,402.244,326.051,412.307,313.683,412.307z"></path> </g> </g></svg>
+            This Week
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="abtn abtn-anim btn-primary" id="calendar-page-tab" data-bs-toggle="pill" data-bs-target="#calendar-page" type="button" role="tab" aria-controls="calendar-page" aria-selected="false">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            Calendar
+        </button>
+    </li>
+</ul>
+
+  
+
+<div class="container overflow-hidden">
+    <div class="tab-content" id="tabs-location">
+        <div class="tab-pane fade show active" id="this-week" role="tabpanel" aria-labelledby="this-week-tab" tabindex="0">
+
+            <div class="row pt-5 ps-3 ps-lg-5 rounded-top-5 tl_corner">
+
+                <h2 class="pt-2 linear-wipe" id="next-collection">
+                    Next collection:
+                </h2>
+
+            </div>
+            
+            <style>
+            .badgetop {
+                animation-name: bg_color_uniform;
+                animation-duration: 6s;
+                animation-timing-function: ease-in;
+                animation-iteration-count: infinite;
+            }
+
+            @keyframes bg_color_uniform {
+                0%   {background-color:{{ colour_one }};}
+                25%  {background-color:{{ colour_one }};}
+                50%  {background-color:{{ colour_two }};}
+                75%  {background-color:{{ colour_two }};}
+                100% {background-color:{{ colour_one }};}
+            }
+
+            .rb_corner {
+                background: linear-gradient(170deg, rgba(0,0,0,0) 0%, rgba(84,84,84,0.0074) 74%, 
+                {{ colour_one }}47 100%);
+            }
+
+            .tl_corner {
+                background: linear-gradient(354deg, rgba(0,0,0,0) 0%, rgba(84,84,84,0.0074) 79%, 
+                {% if colour_two != false %}
+                    {{ colour_two }}99
+                {% else %}
+                    {{ colour_one }}99
+                {% endif %} 100%);
+            }
+
+            .colour_one {
+                color: {{ colour_one }};
+            }
+
+            .colour_two {
+                color: 
+                {% if colour_two != false %}
+                {{ colour_two }};
+                {% else %}
+                {{ colour_one }};
+                {% endif %}
+            }
+            
+            [data-bs-theme=dark] .linear-wipe {
+                background: linear-gradient(to right, #dee2e6 20%, {{ colour_one }} 45%, 
+                {% if colour_two != false %}
+                    {{ colour_two }}
+                {% else %}
+                    {{ colour_one }}
+                {% endif %} 55%, #dee2e6 90%);
+                background-size: 200% auto;
+                color: #000;
+                background-clip: text;
+                text-fill-color: transparent;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                -webkit-animation: wipe 8s linear infinite;
+                        animation: wipe 8s linear infinite;
+            }
+            
+            .linear-wipe {
+                background: linear-gradient(to right, #000 20%, {{ colour_one }} 45%, 
+                {% if colour_two != false %}
+                    {{ colour_two }}
+                {% else %}
+                    {{ colour_one }}
+                {% endif %} 55%, #000 90%);
+                background-size: 200% auto;
+                color: #000;
+                background-clip: text;
+                text-fill-color: transparent;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                -webkit-animation: wipe 8s linear infinite;
+                        animation: wipe 8s linear infinite;
+            }
+
+            @-webkit-keyframes wipe {
+                to {
+                background-position: 200% center;
+                }
+            }
+
+            @keyframes wipe {
+                to {
+                background-position: 200% center;
+                }
+            }
+            </style>
+            {# if first row true end #}
+            {% endif %} 
+            {% if row_number == 2 %}                    
+            <div class="pt-5 ps-3 ps-lg-5 rounded-top-5">
+                <h2 class="pt-2" id="future-collections">
+                Future collections:
+                </h2>
+            </div>
+            {% endif %}
+                <div class="row border-bottom pb-4 mb-4 rounded-bottom-5 {% if first_row == true %}rb_corner{% endif %}" style="flex-wrap: nowrap">
+                    <div class="col">
+                        <div class="p-3 p-lg-5 rounded-3">
+                            <h2>
+                            {{ key | date("l,") }}
+                            <br /><span class="bindate fs-4">{{ key }}</span>
+                            </h2>
+                        {% for value in weather %}
+                            {% if value.wdate == key %}
+                            {% set upcoming = key %}
+                                <a href="javascript:void();" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom" style="text-decoration: none">
+                                    <div class="card weather rb_corner rounded-3">
+                                        <div class="card-header weather-header tl_corner text-center">
+                                            <img src="https://bins.b-cdn.net/bins-main/img/{{ value.code }}.png" style="margin-bottom: 5px; margin-top: -10px; width: 24px; height: 24px;" loading="lazy" />
+                                            <span class="fs-6">{{ value.temperature }}&deg;C</span>
+                                            <br /><span class="weatherinfo small">{{ value.info }}</span>
+                                            <br /><span class="small">{{ value.precipitation }}: {{ value.probability }}%
+                                            <br />wind: {{ value.wind }}mph</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                        </div>
+                    </div>
+            
+                    <div class="col col-md-auto">
+                        <div class="h-100 p-lg-5 rounded-3 float-end">
+                        {% if value.1 != false %}
+                            <a href="javascript:void()" data-bs-toggle="modal" data-bs-target="#{{ value.1 }}-modal">
+                                <figure class="figure float-end">
+                                    <img src="https://bins.b-cdn.net/bins-main/img/{{ value.1 }}-1.png" class="bin figure-img img-fluid"
+                                    onmouseover="this.src='https://bins.b-cdn.net/bins-main/img/{{ value.1 }}-2.png'"
+                                    onmouseout="this.src='https://bins.b-cdn.net/bins-main/img/{{ value.1 }}-1.png'"
+                                    ontouchstart="this.src='https://bins.b-cdn.net/bins-main/img/{{ value.1 }}-2.png'"
+                                    ontouchend="this.src='https://bins.b-cdn.net/bins-main/img/{{ value.1 }}-1.png'"
+                                    alt="{{ value.1 }}" {% if first_row == false %}loading="lazy"{% endif %}
+                                    />
+                                    <figcaption class="bin fw-bold text-center {{ value.1 }}">{{ value.1|upper }}</figcaption>
+                                </figure>
+                            </a>
+                        {% endif %}
+                        </div>
+                    </div>
+            
+                    <div class="col col-md-auto">
+                        <div class="h-100 p-lg-5 rounded-3 float-end">
+                            <a href="javascript:void()" data-bs-toggle="modal" data-bs-target="#{{ value.0 }}-modal">
+                                <figure class="figure float-end">
+                                    <img src="https://bins.b-cdn.net/bins-main/img/{{ value.0 }}-1.png" class="bin figure-img img-fluid"
+                                    onmouseover="this.src='https://bins.b-cdn.net/bins-main/img/{{ value.0 }}-2.png'"
+                                    onmouseout="this.src='https://bins.b-cdn.net/bins-main/img/{{ value.0 }}-1.png'"
+                                    ontouchstart="this.src='https://bins.b-cdn.net/bins-main/img/{{ value.0 }}-2.png'"
+                                    ontouchend="this.src='https://bins.b-cdn.net/bins-main/img/{{ value.0 }}-1.png'"
+                                    alt="{{ value.0 }}" {% if first_row == false %}loading="lazy"{% endif %} 
+                                    />
+                                    <figcaption class="bin fw-bold text-center {{ value.0 }}">{{ value.0|upper }}</figcaption>
+                                </figure>
+                            </a>
+                        </div>
+                    </div>
+
+            </div>
+            
+            {% set first_row = false %}
+            {% set row_number = row_number + 1 %}
+            {% endfor %}
+            
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="calendar-page" role="tabpanel" aria-labelledby="calendar-page-tab" tabindex="1">
+       
+       
+{# calendar html #}
+
+        <div class="card" id="calendar-card" style="display: none">
+            <h3 class="card-header" id="monthAndYear" style="display: none"></h3>
+            <form class="form-inline">
+                <div class="row align-items-center justify-content-center row-cols-1 row-md-cols-2 card-header">
+                    <div class="col-7 col-md-5">
+                        <select class="form-control month" name="month" id="month" onchange="jump()">
+                            <option value=0>January</option>
+                            <option value=1>February</option>
+                            <option value=2>March</option>
+                            <option value=3>April</option>
+                            <option value=4>May</option>
+                            <option value=5>June</option>
+                            <option value=6>July</option>
+                            <option value=7>August</option>
+                            <option value=8>September</option>
+                            <option value=9>October</option>
+                            <option value=10>November</option>
+                            <option value=11>December</option>
+                        </select>
+                    </div>
+                    <div class="col-7 col-md-5 year-column">
+                        <select class="form-control year" name="year" id="year" onchange="jump()">
+                            <option value=2023>2023</option>
+                            <option value=2024>2024</option>
+                            <option value=2025>2025</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+
+            <div class="row align-items-center row-cols-3 d-flex justify-content-center">
+                <div class="col-lg-2 d-flex justify-content-center">
+                    <button class="btn btn-outline-primary month-arrow disable-dbl-tap-zoom" id="previous" onclick="previous()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="col-md-auto d-flex justify-content-center">
+                    <button class="btn btn-outline-primary disable-dbl-tap-zoom" id="jumpToday" onclick="jumpToday()">Today</button>
+                </div>
+                <div class="col-lg-2 d-flex justify-content-center">
+                    <button class="btn btn-outline-primary month-arrow disable-dbl-tap-zoom" id="next" onclick="next()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <table class="table table-bordered table-responsive-sm" id="calendar">
+                <thead>
+                <tr>
+                    <th>Mon</th>
+                    <th>Tue</th>
+                    <th>Wed</th>
+                    <th>Thu</th>
+                    <th>Fri</th>
+                    <th>Sat</th>
+                    <th>Sun</th>
+                </tr>
+                </thead>
+
+                <tbody id="calendar-body">
+
+                </tbody>
+            </table>
+            
+        </div>
+
+{# end calendar html #}
+
+    </div>
+
+</div>
+
+
+<div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasBottomLabel">Weather forecast</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="row d-flex flex-nowrap">
+    {% for value in weather %}
+        <div class="col">
+            <div class="card weather {% if value.wdate in sorted_bin_dates | keys %} rb_corner {% endif %} rounded-3 text-nowrap" style="opacity: 1">
+                <div class="card-header weather-header {% if value.wdate in sorted_bin_dates | keys %} tl_corner {% endif %} text-center">
+                    <span class="fs-3 bindate">{{ value.wdate }}</span><br /><br />
+                    <br /><img src="https://bins.b-cdn.net/bins-main/img/large/{{ value.code }}.png" style="margin-bottom: 5px; margin-top: -10px; width: 72px; height: 72px;" loading="lazy" />
+                    <br /><span class="fs-4">{{ value.temperature }}&deg;C</span>
+                    <br /><span class="weatherinfo">{{ value.info }}</span><br />
+                    <br /><span class="small">{{ value.precipitation | capitalize }} probability: {{ value.probability }}%
+                    <br />Wind speed: {{ value.wind }}mph</span>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script defer>
+
+//calendar
+var all_bin_dates = { 
+    brown: [],
+    blue: [],
+    green: [],
+    grey: []
+}
+{% for bin_date in all_bin_dates %}
+{% if bin_date.brown != false %}
+all_bin_dates.brown.push('{{ bin_date.brown }}')
+{% endif %}
+{% if bin_date.blue != false %}
+all_bin_dates.blue.push('{{ bin_date.blue }}')
+{% endif %}
+{% if bin_date.green != false %}
+all_bin_dates.green.push('{{ bin_date.green }}')
+{% endif %}
+{% if bin_date.grey != false %}
+all_bin_dates.grey.push('{{ bin_date.grey }}')
+{% endif %}
+{% endfor %}
+
+function AddToHomeScreen(settings = {}) {
+
+  // Container styles
+  var backgroundColor = settings.backgroundColor || "#f9f9f9"
+  var padding = settings.padding || "10px"
+  var shadowColor = settings.shadowColor || "#e9e9e9"
+  var shadowSize = settings.shadowSize || "10px"
+  // Content styles
+  var fontFamily = settings.fontFamily || "-apple-system, sans-serif"
+  var color = settings.color || "#5d5d5d"
+  var fontSize = settings.fontSize || "0.9rem"
+  // Content
+  var brandName = settings.brandName || "Bins.ren"
+  var logoImage =
+    settings.logoImage ||
+    `<img src="https://bins.b-cdn.net/bins-main/img/green-1.png" alt="Bin Collection Days" style="width: 50px; height: 86px" loading="lazy" />`
+   
+  var htmlContent =
+    settings.htmlContent ||
+    `Install <strong>${brandName} web app</strong> on your iOS device: tap Share <img src="https://bins.b-cdn.net/bins-main/img/share-sm.png" 
+    alt="share" style="width: 18px; height: 18px" loading="lazy"> and <strong>Add to Home Screen</strong> 
+    <img src="https://bins.b-cdn.net/bins-main/img/add-sm.png" alt="add" style="width: 18px; height: 18px" loading="lazy"><br />
+    <img src="https://bins.b-cdn.net/bins-main/img/arrow-down.gif" style="width: 50px; height: 50px; margin-left: auto; 
+    margin-right: auto; display: block; position: relative; right: 38px;" loading="lazy">`
+  // Define iOS User-Agent variable
+  var iOS = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase())
+  
+ 
+  // Define standalone mode variable - && !window.localStorage.a2hs_message - in the if below
+  var standalone =
+    "standalone" in window.navigator && window.navigator.standalone
+   
+  // Check localStorage before render a2hs container
+  if (iOS && !standalone ) {
+    // Define container variable
+    var div = document.createElement("div")
+    // Define style variable
+    var style = document.createElement("style")
+    // Create styles
+    style.innerHTML = `
+      .a2hs__container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        box-sizing: border-box;
+        box-shadow: ${shadowColor} 0 0 ${shadowSize};
+        background-color: ${backgroundColor};
+        padding: ${padding};
+        width: 100%;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        z-index: 69;
+      }
+      .a2hs__container .a2hs__logo {
+        padding: ${padding};
+      }
+      .a2hs__container .a2hs__text {
+        font-family: ${fontFamily};
+        font-size: ${fontSize};
+        color: ${color};
+      }`
+    // Create the message
+    div.innerHTML = `<div class="a2hs__logo">${logoImage}</div>
+      <div class="a2hs__text">${htmlContent}</div>`
+    // Add class to container
+    div.setAttribute("class", "a2hs__container animated-box in")
+    
+    // Add onClick function
+    div.onclick = function (event) {
+      // Prevent default click
+      event.preventDefault()
+      // Hide a2hs_message
+      window.localStorage.setItem("a2hs_message", "hide")
+      // Remove a2hs container from DOM
+      document.querySelector(".a2hs__container").remove()
+    }
+    // Render elements
+    document.head.appendChild(style)
+    document.body.appendChild(div)
+    
+  }
+ 
+}
+
+
+document.addEventListener("DOMContentLoaded", function(){
+  AddToHomeScreen({
+  brandName: "Bins.ren/{{ location_string }}",
+  fontFamily: "Helvetica, Arial, sans-serif"
+  })
+})
+</script>
+
+<script src="https://bins.b-cdn.net/js/bins.js?v=11" defer></script>
+{% endblock %}

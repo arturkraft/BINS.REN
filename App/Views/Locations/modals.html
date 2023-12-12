@@ -1,0 +1,146 @@
+{% set bin_content = {
+'brown': [
+    ['Grass cuttings (permit required)', 
+    'Flowers and plants (permit required)', 
+    'Weeds (permit required)', 
+    'Leaves (permit required)', 
+    'Small branches and twigs (permit required)', 
+    'Cooked and uncooked food', 
+    'Leftovers', 
+    'Fruit and vegetable peelings', 
+    'Tea bags and coffee grounds',
+    'Egg shells', 
+    'Out of date food (remove packaging)', 
+    'Bread, pasta and cakes', 
+    'Meat, fish and small bones'],
+        ['Plastic bags',
+        'Packaging',
+        'Liquids',
+        'Fats and oils',
+        'Rubble and soil',
+        'Plant pots',
+        'Wood and fencing',
+        'Garden furniture',
+        'Plastics, cans and glass',
+        'Paper, card and cardboard',
+        'Batteries',
+        'Vapes']
+    ],
+'grey': [
+    ['Non-recyclable waste', 
+    'Plastic bags and polythene', 
+    'Polystyrene', 
+    'Crisp and sweet wrappers', 
+    'Used tissues and paper towels', 
+    'Cling film', 
+    'Tinfoil', 
+    'Lightbulbs', 
+    'Pet litter', 
+    'Nappies', 
+    'Personal hygiene products', 
+    'Food and drinks pouches', 
+    'Hard plastics (toys, coat hangers, CD cases etc.)', 
+    'Padded envelopes', 
+    'Shredded paper'],
+        ['Plastics, cans and glass', 
+        'Paper, card and cardboard', 
+        'Food waste', 'Garden waste', 
+        'Electrical items', 
+        'Textiles and shoes']
+    ],
+'green': [
+    ['Plastic bottles', 
+    'Plastic pots, tubs and trays', 
+    'Fruit and vegetable punnets', 
+    'Clean takeaway containers', 
+    'Cleaning product bottles', 
+    'Drinks cans (empty and rinsed)', 
+    'Food/pet food tins (empty and rinsed)', 
+    'Biscuit/sweet tins', 
+    'Aerosols', 
+    'Glass bottles and jars', 
+    'Cartons', 'Milk cartons'],
+        ['Paper, card and cardboard', 
+        'Food residue', 
+        'Carrier bags', 
+        'Sweet and crisp wrappers', 
+        'Plastic wrapping and bubble wrap', 
+        'Polystyrene Food and drink pouches', 
+        'Hard plastics (toys, coat hangers, CD case etc)', 
+        'Food and drink pouches', 
+        'Light bulbs', 
+        'Pyrex or crockery', 
+        'Mirrors', 
+        'Tinfoil']
+    ],
+'blue': [
+    ['Cardboard (flattened)', 
+    'Cereal boxes', 
+    'Large brown cardboard boxes', 
+    'Corrugated cardboard', 
+    'Toilet and kitchen roll tubes', 
+    'Cardboard packaging', 
+    'Paper (clean and dry)', 
+    'Envelopes (with and without windows)', 
+    'Magazines', 
+    'Newspapers', 
+    'Office paper', 
+    'Telephone directories', 
+    'Paperback books', 
+    'Catalogues', 
+    'Junk mail and takeaway menus'],
+        ['Glass', 
+        'Plastics and cans', 
+        'Hardback books', 
+        'Plastic carrier bags', 
+        'Padded envelopes', 
+        'Plastic wrapping and bubble wrap', 
+        'Polystyrene', 
+        'Packaging with food residue', 
+        'Used tissues and kitchen roll', 
+        'Foil wrapping paper', 
+        'Tinfoil', 
+        'Shredded paper']
+    ]
+    } %}
+
+{% for bin, content_array in bin_content %}
+
+<div class="modal fade" id="{{ bin }}-modal" tabindex="-1" style="z-index: 99969">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title {{ bin }}">What goes in the {{ bin }} bin?</h4>
+                <button type="button" class="btn-close {{ bin }}" data-bs-dismiss="modal"></button>
+            </div>
+        <div class="modal-body">
+            <div class="container">
+                <div class="row align-items-start">
+                    <div class="col">
+                        <h5>These items can go in your {{ bin }} bin:</h5>
+                        <ul style="list-style: none;">
+                        {% for item in content_array.0 %}
+                            <li><span class="text-success">✅</span> {{ item }}</li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="col">
+                        <h5>Do not put these items in your {{ bin }} bin:</h5>
+                        <ul style="list-style: none;">
+                        {% for item in content_array.1 %}
+                            <li><span class="text-danger">❌</span> {{ item }}</li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary {{ bin }}" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+

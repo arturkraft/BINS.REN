@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+
+{% block title %}Renfrewshire{% endblock %}
+{% block apptitle %}{{ location }}{% endblock %}
+{% block appname %}{{ location }}{% endblock %}
+{% block jscss %}
+{% include "scripts_styles_online.html" %}
+{% endblock %}
+
+{% block body %}
+
+<div class="container py-4">
+    <div class="p-5 mb-4 rounded-3 bg-body-tertiary">
+      <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">Bins.Ren</h1>
+        <p class="col-md-8 fs-4">An easy way to check bin collection dates for your location in {{ location }} is to add this web app to your home screen. By doing so, you'll have it readily available, even if you lose internet connection.</p>
+        <ul class="nav nav-pills mb-3" id="tabs-ul" role="tablist">
+        {% for village in locations %}
+            <li class="nav-item" role="presentation">
+                <a class="btn abtn abtn-anim btn-primary" href="https://bins.ren/{{ village }}/" role="button">
+                {% if village == "bridgeofweir" %}
+                    Bridge of Weir
+                {% elseif village == "weirswynd" %}
+                    Weirs Wynd
+                {% else %}
+                    {{ village | capitalize }}
+                {% endif %}
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+
+</div>
+
+{% endblock %}

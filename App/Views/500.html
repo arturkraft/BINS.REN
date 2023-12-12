@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %} Error {% endblock %}
+{% block jscss %}
+{% include "scripts_styles_online.html" %}
+    <script>
+    {% if ends_with == 0 %}
+    window.history.replaceState(null, document.title, window.location.pathname+'/')
+    {% endif %}
+    </script>
+{% endblock %}
+
+{% block body %}
+
+<h1>An error occurred</h1>
+
+<p>Sorry, an error has occurred.</p>
+
+<script src="https://bins.b-cdn.net/js/bins.js?v=9" defer></script>
+{% endblock %}
