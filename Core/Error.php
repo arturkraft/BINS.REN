@@ -2,6 +2,7 @@
 
 namespace Core;
 
+
 /**
  * Error and Exception handler
  *
@@ -23,9 +24,8 @@ class Error
      */
     public static function errorHandler($level, $message, $file, $line)
     {
-        if (error_reporting() !== 0) { //to keep the @ operator working
+        if (error_reporting() !== 0) //to keep the @ operator working
             throw new \ErrorException($message, 0, $level, $file, $line);
-        }
     }
 
     /**
@@ -53,7 +53,6 @@ class Error
         if (\App\Config::SHOW_ERRORS) {
             echo $message . '</p>';
         } else {
-            //echo ($code == 404) ? 'Page not found' : 'An error occurred';
             ini_set('error_log', dirname(__DIR__) . '/logs/' . date("Y-m-d") . '.txt');
             error_log($message);
 

@@ -42,10 +42,7 @@ class Generator
                         if ($bin == "brown") {
                             $number_of_rows = $i;
                             break;
-                        } else {
-                            array_push($bin_dates[$bin], null);
-                        }
-                        
+                        } else array_push($bin_dates[$bin], null);
                     }      
 
                 }

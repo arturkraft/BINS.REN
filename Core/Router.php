@@ -71,9 +71,8 @@ class Router
             if (preg_match($route, $url, $matches)) {
                 // Get named capture group values
                 foreach ($matches as $key => $match) {
-                    if (is_string($key)) {
+                    if (is_string($key))
                         $params[$key] = $match;
-                    }
                 }
 
                 $this->params = $params;
@@ -118,9 +117,8 @@ class Router
                     header('Content-Disposition: attachment; filename="sw.js"');
                     readfile($filename);
                     break;
-                } else {
-                    throw new \Exception("File $url not found", 404);
-                }  
+                } else throw new \Exception("File $url not found", 404);
+
             } elseif($url == "$village/manifest.webmanifest") {
                 $filename = "$village.webmanifest";
                 if(file_exists($filename)) {
@@ -129,12 +127,8 @@ class Router
                     header('Content-Disposition: attachment; filename="manifest.webmanifest"');
                     readfile($filename);
                     break;
-                } else {
-                    throw new \Exception("File $url not found", 404);
-                }  
-            } else {
-                $sw = false;
-            }
+                } else throw new \Exception("File $url not found", 404);
+            } else $sw = false;
         }
         
         if($sw == false) {
@@ -152,20 +146,13 @@ class Router
                     $action = $this->params['action'];
                     $action = $this->convertToCamelCase($action);
     
-                    if(preg_match('/action$/i', $action) == 0) {
+                    if(preg_match('/action$/i', $action) == 0)
                         $controller_object->$action();
-                    } else {
-                        throw new \Exception("Method $action in controller $controller cannot be called directly - remove the Action suffix to call this method");
-                    }
-                    
-                } else {
-                    // echo "Controller class $controller not found";
-                    throw new \Exception("Controller class $controller not found");
-                }
-            } else {
-                //echo 'No route matched.';
-                throw new \Exception("Route $url not found!", 404);
-            }
+                    else throw new \Exception("Method $action in controller $controller cannot be called directly - remove the Action suffix to call this method");
+
+                } else throw new \Exception("Controller class $controller not found");
+                
+            } else throw new \Exception("Route $url not found!", 404);
 
         }
 
@@ -227,11 +214,9 @@ class Router
         if ($url != '') {
             $parts = explode('&', $url, 2);
 
-            if (strpos($parts[0], '=') === false) {
+            if (strpos($parts[0], '=') === false)
                 $url = $parts[0];
-            } else {
-                $url = '';
-            }
+            else $url = '';
         }
 
         return $url;
@@ -247,9 +232,8 @@ class Router
     {
         $namespace = 'App\Controllers\\';
 
-        if (array_key_exists('namespace', $this->params)) {
+        if (array_key_exists('namespace', $this->params))
             $namespace .= $this->params['namespace'] . '\\';
-        }
 
         return $namespace;
     }

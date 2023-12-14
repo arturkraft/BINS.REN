@@ -387,7 +387,7 @@
 <script defer>
 
 //calendar
-var all_bin_dates = { 
+let all_bin_dates = { 
     brown: [],
     blue: [],
     green: [],
@@ -411,21 +411,21 @@ all_bin_dates.grey.push('{{ bin_date.grey }}')
 function AddToHomeScreen(settings = {}) {
 
   // Container styles
-  var backgroundColor = settings.backgroundColor || "#f9f9f9"
-  var padding = settings.padding || "10px"
-  var shadowColor = settings.shadowColor || "#e9e9e9"
-  var shadowSize = settings.shadowSize || "10px"
+  let backgroundColor = settings.backgroundColor || "#f9f9f9"
+  let padding = settings.padding || "10px"
+  let shadowColor = settings.shadowColor || "#e9e9e9"
+  let shadowSize = settings.shadowSize || "10px"
   // Content styles
-  var fontFamily = settings.fontFamily || "-apple-system, sans-serif"
-  var color = settings.color || "#5d5d5d"
-  var fontSize = settings.fontSize || "0.9rem"
+  let fontFamily = settings.fontFamily || "-apple-system, sans-serif"
+  let color = settings.color || "#5d5d5d"
+  let fontSize = settings.fontSize || "0.9rem"
   // Content
-  var brandName = settings.brandName || "Bins.ren"
-  var logoImage =
+  let brandName = settings.brandName || "Bins.ren"
+  let logoImage =
     settings.logoImage ||
     `<img src="https://bins.b-cdn.net/bins-main/img/green-1.png" alt="Bin Collection Days" style="width: 50px; height: 86px" loading="lazy" />`
    
-  var htmlContent =
+  let htmlContent =
     settings.htmlContent ||
     `Install <strong>${brandName} web app</strong> on your iOS device: tap Share <img src="https://bins.b-cdn.net/bins-main/img/share-sm.png" 
     alt="share" style="width: 18px; height: 18px" loading="lazy"> and <strong>Add to Home Screen</strong> 
@@ -433,19 +433,19 @@ function AddToHomeScreen(settings = {}) {
     <img src="https://bins.b-cdn.net/bins-main/img/arrow-down.gif" style="width: 50px; height: 50px; margin-left: auto; 
     margin-right: auto; display: block; position: relative; right: 38px;" loading="lazy">`
   // Define iOS User-Agent variable
-  var iOS = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase())
+  let iOS = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase())
   
  
   // Define standalone mode variable - && !window.localStorage.a2hs_message - in the if below
-  var standalone =
+  let standalone =
     "standalone" in window.navigator && window.navigator.standalone
    
   // Check localStorage before render a2hs container
-  if (iOS && !standalone ) {
+  if(iOS && !standalone ) {
     // Define container variable
-    var div = document.createElement("div")
+    let div = document.createElement("div")
     // Define style variable
-    var style = document.createElement("style")
+    let style = document.createElement("style")
     // Create styles
     style.innerHTML = `
       .a2hs__container {
@@ -503,5 +503,5 @@ document.addEventListener("DOMContentLoaded", function(){
 })
 </script>
 
-<script src="https://bins.b-cdn.net/js/bins.js?v=11" defer></script>
+<script src="https://bins.b-cdn.net/js/bins.js?v=12" defer></script>
 {% endblock %}

@@ -24,12 +24,10 @@ class View
 
         $file = "../App/Views/$view";  // relative to Core directory
 
-        if (is_readable($file)) {
+        if (is_readable($file))
             require $file;
-        } else {
-            //echo "$file not found";
-            throw new \Exception("$file not found");
-        }
+        else throw new \Exception("$file not found");
+
     }
 
     /**
@@ -44,12 +42,11 @@ class View
     {
         static $twig = null;
  
-        if ($twig === null)
-        {
+        if ($twig === null) {
             $loader = new \Twig\Loader\FilesystemLoader('../App/Views');
             $twig = new \Twig\Environment($loader, [
-            'cache' => '../App/Views/Cache',
-        ]);
+                'cache' => '../App/Views/Cache',
+            ]);
         }
  
         echo $twig->render($template, $args);
@@ -57,7 +54,7 @@ class View
     }
 
     /**
-     * Render an offline view template using Twig
+     * Render a view template using Twig
      *
      * @param string $template  The template file
      * @param array $args  Associative array of data to display in the view (optional)
@@ -68,12 +65,11 @@ class View
     {
         static $twig = null;
  
-        if ($twig === null)
-        {
+        if ($twig === null) {
             $loader = new \Twig\Loader\FilesystemLoader('../App/Views');
             $twig = new \Twig\Environment($loader, [
-            'cache' => '../App/Views/Cache',
-        ]);
+                'cache' => '../App/Views/Cache',
+            ]);
         }
  
         return $twig->render($template, $args);

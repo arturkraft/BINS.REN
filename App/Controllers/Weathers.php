@@ -44,11 +44,9 @@ class Weathers
 
         $data = json_decode($response);
 
-        if (isset($data->data->timelines[0]->intervals[0]->values->temperature)) {
+        if (isset($data->data->timelines[0]->intervals[0]->values->temperature))
             return $data;
-        } else {
-            return 0;
-        }
+        else return 0;
 
     }
 
