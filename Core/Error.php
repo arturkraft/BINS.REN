@@ -50,9 +50,9 @@ class Error
         $message .= $new_line . 'Message: ' . $exception->getMessage();
         $message .= $new_line . 'Stack trace: ' . $pre_tag_open . $exception->getTraceAsString() . $pre_tag_close;
         $message .= $new_line . 'Thrown in: ' . $exception->getFile() . ' on line: ' . $exception->getLine() . $new_line;
-        if (\App\Config::SHOW_ERRORS) {
+        if (\App\Config::SHOW_ERRORS)
             echo $message . '</p>';
-        } else {
+        else {
             ini_set('error_log', dirname(__DIR__) . '/logs/' . date("Y-m-d") . '.txt');
             error_log($message);
 

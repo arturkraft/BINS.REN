@@ -70,10 +70,9 @@ class Router
         foreach ($this->routes as $route => $params) {
             if (preg_match($route, $url, $matches)) {
                 // Get named capture group values
-                foreach ($matches as $key => $match) {
+                foreach ($matches as $key => $match)
                     if (is_string($key))
                         $params[$key] = $match;
-                }
 
                 $this->params = $params;
                 return true;

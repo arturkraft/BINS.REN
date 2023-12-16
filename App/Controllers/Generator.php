@@ -32,13 +32,13 @@ class Generator
             foreach ($bin_dates as $bin => $bin_start_date) {
                 $incremented_date = $bin_start_date[0];
 
-                for ($i = 0; $i < $number_of_rows; $i++){ 
+                for ($i = 0; $i < $number_of_rows; $i++) { 
                     $incremented_date = strtotime($incremented_date . ' + ' . $frequency_and_start_date[$bin][1] . ' weeks');
                     $incremented_date = date("Y-m-d", $incremented_date);
                     //$end_date = $incremented_date; //prioritising number of rows above end date
-                    if (strtotime($end_date) >= strtotime($incremented_date)) {
+                    if (strtotime($end_date) >= strtotime($incremented_date))
                         array_push($bin_dates[$bin], $incremented_date);
-                    } else {
+                    else {
                         if ($bin == "brown") {
                             $number_of_rows = $i;
                             break;
