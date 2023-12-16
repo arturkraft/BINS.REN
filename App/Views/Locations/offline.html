@@ -330,8 +330,9 @@
     <div class="row d-flex flex-nowrap">
     {% for value in weather %}
         <div class="col">
-            <div class="card weather rb_corner rounded-3">
-                <div class="card-header weather-header tl_corner text-center">
+            <div class="card weather {% if value.wdate in sorted_bin_dates | keys %} rb_corner {% endif %} rounded-3" style="opacity: 1">
+                <div class="card-header weather-header {% if value.wdate in sorted_bin_dates | keys %} tl_corner {% endif %} text-center">
+                    <span class="fs-3 bindate">{{ value.wdate }}</span><br /><br />
                     <span class="fs-6">{{ value.temperature }}&deg;C</span>
                     <br /><span class="weatherinfo small">{{ value.info }}</span>
                     <br /><span class="small">{{ value.precipitation }}: {{ value.probability }}%
