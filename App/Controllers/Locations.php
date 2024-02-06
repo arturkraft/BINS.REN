@@ -101,13 +101,14 @@ class Locations extends \Core\Controller
         $blue = 0;
         $green = 0;
         $grey = 0;
+        $stop_the_loop = false;
 
-        $limit = 3; //how many dates per bin colour (to break the loop earlier)
+        $limit = 2; //how many dates per bin colour (to break the loop earlier)
 
         foreach($bin_dates as $bin => $bin_date) {
 
             for($i = 0; $i < 4; $i++) {
-                if($brown <= $limit && $blue <= $limit && $green <= $limit && $grey <= $limit) {
+                if($stop_the_loop == false) {
 
                     //array_keys($bin_date)[$i] returns bin colour
                     $bin_colour = array_keys($bin_date)[$i];
@@ -119,7 +120,12 @@ class Locations extends \Core\Controller
                         else $sorted_bin_dates[$bin_date[$bin_colour]] = [$bin_colour];
 
                         ${$bin_colour}++;
+
                     }
+
+                    if($brown >= $limit && $blue >= $limit && $green >= $limit && $grey >= $limit)
+                        $stop_the_loop = true;
+
 
                 } else break;
 
@@ -127,11 +133,10 @@ class Locations extends \Core\Controller
             
         }
 
-        //sorting by key (date)
-        ksort($sorted_bin_dates);
+
 
         
-        $j=0; //trimming the array to just first 4 keys used on homepage
+        $j = 0; //trimming the array to just first 4 keys used on homepage
         foreach($sorted_bin_dates as $date => $bin) {
             if ($j >= 4)
                 unset($sorted_bin_dates[$date]);
@@ -403,6 +408,28 @@ class Locations extends \Core\Controller
             'sorted_bin_dates' => $sorted_bin_dates,
             'location' => 'Kilbarchan',
             'location_string' => 'kilbarchan',
+            'weather' => $weather,
+            'ends_with' => $this->ends_with
+        ]);
+    }
+    
+    /**
+     * Show the Linwood page
+     *
+     * @return void
+     */
+    public function linwoodAction()
+    {
+        $all_bin_dates = Location::getAll('linwood');
+        $weather = Weather::getAll();
+
+        $sorted_bin_dates = $this->homePageBins($all_bin_dates);
+
+        View::renderTemplate('Locations/index.html', [
+            'all_bin_dates' => $all_bin_dates,
+            'sorted_bin_dates' => $sorted_bin_dates,
+            'location' => 'Linwood',
+            'location_string' => 'linwood',
             'weather' => $weather,
             'ends_with' => $this->ends_with
         ]);
