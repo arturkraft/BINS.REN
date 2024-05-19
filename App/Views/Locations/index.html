@@ -7,36 +7,35 @@
 <link rel="manifest" href="./manifest.webmanifest" />
 <script async src="https://unpkg.com/pwacompat" crossorigin="anonymous"></script>
 {% include "scripts_styles_online.html" %}
-    <script>
-    {% if ends_with == 0 %}
-    window.history.replaceState(null, document.title, window.location.pathname+'/')
-    location.reload(true)
-    {% endif %}
-    // Check compatibility for the browser we're running this in
-        if("serviceWorker" in navigator) {
-            if(navigator.serviceWorker.controller) {
-                console.log("Active service worker found, no need to register")
-            } else {
-                // Register the service worker
-                navigator.serviceWorker
-                .register("sw.js?v={{ random(100, 999) }}", {
-                    scope: "./"
-                })
-                .then(function (reg) {
-                    console.log("Service worker has been registered for scope: " + reg.scope)
-                })
-            }
-            }
+<script>
+{% if ends_with == 0 %}
+window.history.replaceState(null, document.title, window.location.pathname+'/')
+location.reload(true)
+{% endif %}
+if("serviceWorker" in navigator) {
+    if(navigator.serviceWorker.controller) {
+        console.log("Active service worker found, no need to register")
+    } else {
+        // Register the service worker
+        navigator.serviceWorker
+        .register("sw.js?v={{ random(100, 999) }}", {
+            scope: "./"
+        })
+        .then(function (reg) {
+            console.log("Service worker has been registered for scope: " + reg.scope)
+        })
+    }
+    }
 
-            let displayMode = 'browser'
-            const mqStandAlone = '(display-mode: standalone)'
-            if (navigator.standalone || window.matchMedia(mqStandAlone).matches) {
-                displayMode = 'standalone'
-                console.log('yes, PWA')
-        } else {
-            console.log("not PWA")
-        }
-    </script>
+    let displayMode = 'browser'
+    const mqStandAlone = '(display-mode: standalone)'
+    if (navigator.standalone || window.matchMedia(mqStandAlone).matches) {
+        displayMode = 'standalone'
+        console.log('yes, PWA')
+} else {
+    console.log("not PWA")
+}
+</script>
 {% endblock %}
 
 {% block body %}
@@ -108,98 +107,116 @@
 
             </div>
             
-            <style>
-            .badgetop {
-                animation-name: bg_color_uniform;
-                animation-duration: 6s;
-                animation-timing-function: ease-in;
-                animation-iteration-count: infinite;
-            }
+<style>
+.badgetop {
+    animation-name: bg_color_uniform;
+    animation-duration: 6s;
+    animation-timing-function: ease-in;
+    animation-iteration-count: infinite;
+}
 
-            @keyframes bg_color_uniform {
-                0%   {background-color:{{ colour_one }};}
-                25%  {background-color:{{ colour_one }};}
-                50%  {background-color:{{ colour_two }};}
-                75%  {background-color:{{ colour_two }};}
-                100% {background-color:{{ colour_one }};}
-            }
+@keyframes bg_color_uniform {
+    0%   {background-color:{{ colour_one }};}
+    25%  {background-color:{{ colour_one }};}
+    50%  {background-color:{{ colour_two }};}
+    75%  {background-color:{{ colour_two }};}
+    100% {background-color:{{ colour_one }};}
+}
 
-            .rb_corner {
-                background: linear-gradient(170deg, rgba(0,0,0,0) 0%, rgba(84,84,84,0.0074) 74%, 
-                {{ colour_one }}47 100%);
-            }
+.rb_corner {
+    background: linear-gradient(170deg, rgba(0,0,0,0) 0%, rgba(84,84,84,0.0074) 74%, 
+    {{ colour_one }}47 100%);
+}
 
-            .tl_corner {
-                background: linear-gradient(354deg, rgba(0,0,0,0) 0%, rgba(84,84,84,0.0074) 79%, 
-                {% if colour_two != false %}
-                    {{ colour_two }}99
-                {% else %}
-                    {{ colour_one }}99
-                {% endif %} 100%);
-            }
+.tl_corner {
+    background: linear-gradient(354deg, rgba(0,0,0,0) 0%, rgba(84,84,84,0.0074) 79%, 
+    {% if colour_two != false %}
+        {{ colour_two }}99
+    {% else %}
+        {{ colour_one }}99
+    {% endif %} 100%);
+}
 
-            .colour_one {
-                color: {{ colour_one }};
-            }
+.colour_one {
+    color: {{ colour_one }};
+}
 
-            .colour_two {
-                color: 
-                {% if colour_two != false %}
-                {{ colour_two }};
-                {% else %}
-                {{ colour_one }};
-                {% endif %}
-            }
-            
-            [data-bs-theme=dark] .linear-wipe {
-                background: linear-gradient(to right, #dee2e6 20%, {{ colour_one }} 45%, 
-                {% if colour_two != false %}
-                    {{ colour_two }}
-                {% else %}
-                    {{ colour_one }}
-                {% endif %} 55%, #dee2e6 90%);
-                background-size: 200% auto;
-                color: #000;
-                background-clip: text;
-                text-fill-color: transparent;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                -webkit-animation: wipe 8s linear infinite;
-                        animation: wipe 8s linear infinite;
-            }
-            
-            .linear-wipe {
-                background: linear-gradient(to right, #000 20%, {{ colour_one }} 45%, 
-                {% if colour_two != false %}
-                    {{ colour_two }}
-                {% else %}
-                    {{ colour_one }}
-                {% endif %} 55%, #000 90%);
-                background-size: 200% auto;
-                color: #000;
-                background-clip: text;
-                text-fill-color: transparent;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                -webkit-animation: wipe 8s linear infinite;
-                        animation: wipe 8s linear infinite;
-            }
+.colour_two {
+    color: 
+    {% if colour_two != false %}
+    {{ colour_two }};
+    {% else %}
+    {{ colour_one }};
+    {% endif %}
+}
+    
+[data-bs-theme=dark] .linear-wipe {
+    background: linear-gradient(to right, #dee2e6 20%, {{ colour_one }} 45%, 
+    {% if colour_two != false %}
+        {{ colour_two }}
+    {% else %}
+        {{ colour_one }}
+    {% endif %} 55%, #dee2e6 90%);
+    background-size: 200% auto;
+    color: #000;
+    background-clip: text;
+    text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-animation: wipe 8s linear infinite;
+            animation: wipe 8s linear infinite;
+}
+    
+.linear-wipe {
+    background: linear-gradient(to right, #000 20%, {{ colour_one }} 45%, 
+    {% if colour_two != false %}
+        {{ colour_two }}
+    {% else %}
+        {{ colour_one }}
+    {% endif %} 55%, #000 90%);
+    background-size: 200% auto;
+    color: #000;
+    background-clip: text;
+    text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-animation: wipe 8s linear infinite;
+            animation: wipe 8s linear infinite;
+}
 
-            @-webkit-keyframes wipe {
-                to {
-                background-position: 200% center;
-                }
-            }
+@-webkit-keyframes wipe {
+    to {
+    background-position: 200% center;
+    }
+}
 
-            @keyframes wipe {
-                to {
-                background-position: 200% center;
-                }
-            }
-            </style>
+@keyframes wipe {
+    to {
+    background-position: 200% center;
+    }
+}
+</style>
             {# if first row true end #}
             {% endif %} 
-            {% if row_number == 2 %}                    
+            {% if row_number == 2 %}
+
+            <div class="row row-cols-1 row-cols-xl-3 mb-3 text-center">
+            <div class="col"></div>
+            <div class="col">
+                <div class="card mb-4 rounded-3 shadow-sm border-secondary">
+                <div class="card-header py-1 text-white bg-secondary border-secondary">
+                    <h4 class="my-0 fw-normal">Leaky sink?🚰💦</h4>
+                </div>
+                <div class="card-body">
+                    
+                    <p>Got a leaky sink or other plumbing problems?</p><p>Call your local plumber <strong>Steven Hyndman</strong> now at <strong><a href="tel:+447464951438">07464&nbsp;951438</a></strong> for first-rate service that your neighbours are raving about! Quote 'bins app' for <u>special rates</u>!</p>
+                    <a href="tel:+447464951438" class="w-75 py-2 btn btn-secondary rounded">Call now and quote "bins&nbsp;app"</a>
+                </div>
+                </div>
+            </div>
+            <div class="col"></div>
+            </div>
+
             <div class="pt-5 ps-3 ps-lg-5 rounded-top-5">
                 <h2 class="pt-2" id="future-collections">
                 Future collections:
@@ -304,7 +321,6 @@
                     </div>
                     <div class="col-7 col-md-5 year-column">
                         <select class="form-control year" name="year" id="year" onchange="jump()">
-                            <option value=2023>2023</option>
                             <option value=2024>2024</option>
                             <option value=2025>2025</option>
                         </select>
@@ -503,5 +519,5 @@ document.addEventListener("DOMContentLoaded", function(){
 })
 </script>
 
-<script src="https://bins.b-cdn.net/js/bins.js?v=12" defer></script>
+<script src="https://bins.b-cdn.net/js/bins.js?v=14" defer></script>
 {% endblock %}
