@@ -83,6 +83,10 @@ class Locations extends \Core\Controller
         if(isset($weather[0]['modified']))
             $this->checkWeatherUpdateDate($weather[0]['modified']);
         else $this->checkWeatherUpdateDate('2023-11-01 01:01:01');
+
+        $jsonString = json_encode($sorted_bin_dates, JSON_PRETTY_PRINT);
+
+        file_put_contents("$name.json", $jsonString);
     }
 
 
@@ -133,7 +137,8 @@ class Locations extends \Core\Controller
             
         }
 
-
+        //sorting by key (date)
+        ksort($sorted_bin_dates);
 
         
         $j = 0; //trimming the array to just first 4 keys used on homepage

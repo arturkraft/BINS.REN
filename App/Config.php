@@ -15,28 +15,28 @@ class Config
      *
      * @var string
      */
-    const DB_HOST = "localhost";
+    const DB_HOST = "";
 
     /**
      * Database name
      *
      * @var string
      */
-    const DB_NAME = "bins";
+    const DB_NAME = "";
 
     /**
      * Database user
      *
      * @var string
      */
-    const DB_USER = "root";
+    const DB_USER = "";
 
     /**
      * Database user's password
      *
      * @var string
      */
-    const DB_PASSWORD = "root";
+    const DB_PASSWORD = "";
     
     /**
      * Show or hide error messages on screen
@@ -57,7 +57,7 @@ class Config
      * 
      * @var string
      */
-    const TOMORROW_IO_API_KEY = " ";
+    const TOMORROW_IO_API_KEY = "";
 
     /**
      * All locations
@@ -90,6 +90,7 @@ class Config
         "houston" => "Houston",
         "howwood" => "Howwood",
         "kilbarchan" => "Kilbarchan",
+        "linwood" => "Linwood",
         "weirswynd" => "Weirs Wynd"
     ];
 

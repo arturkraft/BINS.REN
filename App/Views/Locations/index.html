@@ -5,54 +5,61 @@
 {% block appname %}{{ location }}{% endblock %}
 {% block jscss %}
 <link rel="manifest" href="./manifest.webmanifest" />
-<script async src="https://unpkg.com/pwacompat" crossorigin="anonymous"></script>
 {% include "scripts_styles_online.html" %}
-    <script>
-    {% if ends_with == 0 %}
-    window.history.replaceState(null, document.title, window.location.pathname+'/')
-    location.reload(true)
-    {% endif %}
-    // Check compatibility for the browser we're running this in
-        if("serviceWorker" in navigator) {
-            if(navigator.serviceWorker.controller) {
-                console.log("Active service worker found, no need to register")
-            } else {
-                // Register the service worker
-                navigator.serviceWorker
-                .register("sw.js?v={{ random(100, 999) }}", {
-                    scope: "./"
-                })
-                .then(function (reg) {
-                    console.log("Service worker has been registered for scope: " + reg.scope)
-                })
-            }
-            }
+<script>
+{% if ends_with == 0 %}
+window.history.replaceState(null, document.title, window.location.pathname+'/')
+location.reload(true)
+{% endif %}
+if("serviceWorker" in navigator) {
+    if(navigator.serviceWorker.controller) {
+        console.log("Active service worker found, no need to register")
+    } else {
+        // Register the service worker
+        navigator.serviceWorker
+        .register("sw.js?v={{ random(100, 999) }}", {
+            scope: "./"
+        })
+        .then(function (reg) {
+            console.log("Service worker has been registered for scope: " + reg.scope)
+        })
+    }
+    }
 
-            let displayMode = 'browser'
-            const mqStandAlone = '(display-mode: standalone)'
-            if (navigator.standalone || window.matchMedia(mqStandAlone).matches) {
-                displayMode = 'standalone'
-                console.log('yes, PWA')
-        } else {
-            console.log("not PWA")
-        }
-    </script>
+    let displayMode = 'browser'
+    const mqStandAlone = '(display-mode: standalone)'
+    if (navigator.standalone || window.matchMedia(mqStandAlone).matches) {
+        displayMode = 'standalone'
+        console.log('yes, PWA')
+} else {
+    console.log("not PWA")
+}
+</script>
+<script async src="https://unpkg.com/pwacompat" crossorigin="anonymous"></script>
 {% endblock %}
 
 {% block body %}
 
             {% set first_row = true %}
             {% set row_number = 1 %}
+            {% set colour_two_set = true %}
+     
+
+
             {% for key, value in sorted_bin_dates %}
 
                 {% if value.0 == "brown" %}
                     {% set colour_one = '#966757' %}
+                    {% set colour_two = '#966757' %}
                 {% elseif value.0 == "blue" %}
                     {% set colour_one = '#007dbb' %}
+                    {% set colour_two = '#007dbb' %}
                 {% elseif value.0 == "grey" %}
                     {% set colour_one = '#737373' %}
+                    {% set colour_two = '#737373' %}
                 {% else %}
-                    {% set colour_one = '#038831' %}   
+                    {% set colour_one = '#038831' %}
+                    {% set colour_two = '#038831' %}     
                 {% endif %}
 
                 {% if value.1 != false %}
@@ -65,8 +72,10 @@
                     {% elseif value.1 == "grey" %}
                         {% set colour_two = '#737373' %}
                     {% else %}
-                        {% set colour_two = false %}      
+                        {% set colour_two_set = false %}      
                     {% endif %}
+                {% else %}
+                    {% set colour_two_set = false %}  
                 {% endif %}
 
             {% if first_row == true %}
@@ -74,7 +83,7 @@
 <ul class="nav nav-pills mb-3 align-items-center justify-content-center" id="tabs-ul" role="tablist">
     <li>
         <div id="logo-replace">
-            {% if colour_two != false %}
+            {% if colour_two_set != false %}
             <svg style="color: {{ colour_two }};" xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 448 512"><path d="M284.2 0C296.3 0 307.4 6.848 312.8 17.69L320 32H416C433.7 32 448 46.33 448 64C448 81.67 433.7 96 416 96H32C14.33 96 0 81.67 0 64C0 46.33 14.33 32 32 32H128L135.2 17.69C140.6 6.848 151.7 0 163.8 0H284.2zM31.1 128H416V448C416 483.3 387.3 512 352 512H95.1C60.65 512 31.1 483.3 31.1 448V128zM207 199L127 279C117.7 288.4 117.7 303.6 127 312.1C136.4 322.3 151.6 322.3 160.1 312.1L199.1 273.9V408C199.1 421.3 210.7 432 223.1 432C237.3 432 248 421.3 248 408V273.9L287 312.1C296.4 322.3 311.6 322.3 320.1 312.1C330.3 303.6 330.3 288.4 320.1 279L240.1 199C236.5 194.5 230.4 191.1 223.1 191.1C217.6 191.1 211.5 194.5 207 199V199z" fill="{{ colour_two }}"></path></svg>
             {% endif %}
             <svg style="color: {{ colour_one }};" xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 448 512"><path d="M284.2 0C296.3 0 307.4 6.848 312.8 17.69L320 32H416C433.7 32 448 46.33 448 64C448 81.67 433.7 96 416 96H32C14.33 96 0 81.67 0 64C0 46.33 14.33 32 32 32H128L135.2 17.69C140.6 6.848 151.7 0 163.8 0H284.2zM31.1 128H416V448C416 483.3 387.3 512 352 512H95.1C60.65 512 31.1 483.3 31.1 448V128zM207 199L127 279C117.7 288.4 117.7 303.6 127 312.1C136.4 322.3 151.6 322.3 160.1 312.1L199.1 273.9V408C199.1 421.3 210.7 432 223.1 432C237.3 432 248 421.3 248 408V273.9L287 312.1C296.4 322.3 311.6 322.3 320.1 312.1C330.3 303.6 330.3 288.4 320.1 279L240.1 199C236.5 194.5 230.4 191.1 223.1 191.1C217.6 191.1 211.5 194.5 207 199V199z" fill="{{ colour_one }}"></path></svg>
@@ -83,7 +92,7 @@
     <li class="nav-item" role="presentation">
         <button  class="active abtn abtn-anim btn-primary" id="this-week-tab" data-bs-toggle="pill" data-bs-target="#this-week" type="button" role="tab" aria-controls="this-week" aria-selected="true">
             <svg fill="currentColor" height="22" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 452.732 452.731" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M378.744,116.137c1.479-6.124,0.482-12.458-2.802-17.83c-4.318-7.069-11.846-11.29-20.135-11.29 c-4.33,0-8.578,1.197-12.284,3.462l-7.475,4.567l-7.233-9.077c-2.83-3.545-6.547-6.313-10.747-8.001L128.993,1.904 C125.852,0.641,122.553,0,119.185,0C108.39,0,98.811,6.471,94.779,16.488c-2.622,6.517-2.549,13.665,0.205,20.127 c2.754,6.464,7.86,11.467,14.377,14.087l151.152,60.81H99.619c-14.501,0-26.299,11.798-26.299,26.3 c0,14.502,11.798,26.3,26.299,26.3h13.271l38.042,228.7l-17.355,21.129c-6.05,7.363-6.344,17.877-0.715,25.567 c3.915,5.352,10.211,8.546,16.842,8.546c2.663,0,5.269-0.502,7.741-1.492l54.381-21.739h49.641 c11.619,17.354,31.115,27.908,52.221,27.908c34.657,0,62.854-28.195,62.854-62.854c0-30.374-21.458-55.811-50.354-61.608V164.111 h10.321c10.036,0,19.336-5.843,23.695-14.888c2.291-4.757,3.064-10.012,2.345-15.093l5.566-3.402 C373.49,127.443,377.266,122.261,378.744,116.137z M313.683,412.307c-12.364,0-22.424-10.062-22.424-22.429 c0-12.368,10.06-22.43,22.424-22.43c12.367,0,22.432,10.062,22.432,22.43C336.115,402.244,326.051,412.307,313.683,412.307z"></path> </g> </g></svg>
-            This Week
+            Next collection
         </button>
     </li>
     <li class="nav-item" role="presentation">
@@ -102,107 +111,143 @@
 
             <div class="row pt-5 ps-3 ps-lg-5 rounded-top-5 tl_corner">
 
-                <h2 class="pt-2 linear-wipe" id="next-collection">
-                    Next collection:
+                <h2 class="pt-2" id="next-collection">
+                    {% if "now" | date("m") == 10 %}🎃 {% endif %}{% if "now" | date("m") == 12 %}🎅 {% endif %}<span class="linear-wipe">Next collection:</span>
                 </h2>
 
             </div>
             
-            <style>
-            .badgetop {
-                animation-name: bg_color_uniform;
-                animation-duration: 6s;
-                animation-timing-function: ease-in;
-                animation-iteration-count: infinite;
-            }
+<style>
+html {
+    font-size: 14px;
+}
 
-            @keyframes bg_color_uniform {
-                0%   {background-color:{{ colour_one }};}
-                25%  {background-color:{{ colour_one }};}
-                50%  {background-color:{{ colour_two }};}
-                75%  {background-color:{{ colour_two }};}
-                100% {background-color:{{ colour_one }};}
-            }
+.modal {
+    --bs-modal-margin: 2.8rem !important;
+}
 
-            .rb_corner {
-                background: linear-gradient(170deg, rgba(0,0,0,0) 0%, rgba(84,84,84,0.0074) 74%, 
-                {{ colour_one }}47 100%);
-            }
+ul {
+    padding-left: 0 !important;
+}
 
-            .tl_corner {
-                background: linear-gradient(354deg, rgba(0,0,0,0) 0%, rgba(84,84,84,0.0074) 79%, 
-                {% if colour_two != false %}
-                    {{ colour_two }}99
-                {% else %}
-                    {{ colour_one }}99
-                {% endif %} 100%);
-            }
+.weekend {
+    color: #aaa;
+}
 
-            .colour_one {
-                color: {{ colour_one }};
-            }
+.badgetop {
+    animation-name: bg_color_uniform;
+    animation-duration: 6s;
+    animation-timing-function: ease-in;
+    animation-iteration-count: infinite;
+}
 
-            .colour_two {
-                color: 
-                {% if colour_two != false %}
-                {{ colour_two }};
-                {% else %}
-                {{ colour_one }};
-                {% endif %}
-            }
-            
-            [data-bs-theme=dark] .linear-wipe {
-                background: linear-gradient(to right, #dee2e6 20%, {{ colour_one }} 45%, 
-                {% if colour_two != false %}
-                    {{ colour_two }}
-                {% else %}
-                    {{ colour_one }}
-                {% endif %} 55%, #dee2e6 90%);
-                background-size: 200% auto;
-                color: #000;
-                background-clip: text;
-                text-fill-color: transparent;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                -webkit-animation: wipe 8s linear infinite;
-                        animation: wipe 8s linear infinite;
-            }
-            
-            .linear-wipe {
-                background: linear-gradient(to right, #000 20%, {{ colour_one }} 45%, 
-                {% if colour_two != false %}
-                    {{ colour_two }}
-                {% else %}
-                    {{ colour_one }}
-                {% endif %} 55%, #000 90%);
-                background-size: 200% auto;
-                color: #000;
-                background-clip: text;
-                text-fill-color: transparent;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                -webkit-animation: wipe 8s linear infinite;
-                        animation: wipe 8s linear infinite;
-            }
+@keyframes bg_color_uniform {
+    0%   {background-color:{{ colour_one }};}
+    25%  {background-color:{{ colour_one }};}
+    50%  {background-color:{{ colour_two }};}
+    75%  {background-color:{{ colour_two }};}
+    100% {background-color:{{ colour_one }};}
+}
 
-            @-webkit-keyframes wipe {
-                to {
-                background-position: 200% center;
-                }
-            }
+.rb_corner {
+    background: linear-gradient(170deg, rgba(0,0,0,0) 0%, rgba(84,84,84,0.0074) 74%, 
+    {{ colour_one }}47 100%);
+}
 
-            @keyframes wipe {
-                to {
-                background-position: 200% center;
-                }
-            }
-            </style>
+.tl_corner {
+    background: linear-gradient(354deg, rgba(0,0,0,0) 0%, rgba(84,84,84,0.0074) 79%, 
+    {{ colour_two }}99 100%);
+}
+
+.colour_one {
+    color: {{ colour_one }};
+}
+
+.colour_two {
+    color: {{ colour_two }};
+}
+    
+[data-bs-theme=dark] .linear-wipe {
+    background: linear-gradient(to right, #dee2e6 20%, {{ colour_one }} 45%, 
+    {{ colour_two }} 55%, #dee2e6 90%);
+    background-size: 200% auto;
+    color: #000;
+    background-clip: text;
+    text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-animation: wipe 8s linear infinite;
+            animation: wipe 8s linear infinite;
+}
+    
+.linear-wipe {
+    background: linear-gradient(to right, #000 20%, {{ colour_one }} 45%, 
+    {{ colour_two }} 55%, #000 90%);
+    background-size: 200% auto;
+    color: #000;
+    background-clip: text;
+    text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-animation: wipe 8s linear infinite;
+            animation: wipe 8s linear infinite;
+}
+
+.bins-gradient {
+    background: linear-gradient(to right, {{ colour_one }}, {{ colour_two }});
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.underscore-style {
+    color: white;
+	text-decoration: none;
+    border-bottom: none;
+    position: relative;
+}
+
+.underscore-style::after {
+    content:'';
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    height: 2px;
+    background: {{ colour_one }};
+    background: -webkit-linear-gradient(to right, {{ colour_two }}, {{ colour_one }});
+    background: linear-gradient(to right, {{ colour_two }}, {{ colour_one }});
+}
+
+@-webkit-keyframes wipe {
+    to {
+    background-position: 200% center;
+    }
+}
+
+@keyframes wipe {
+    to {
+    background-position: 200% center;
+    }
+}
+</style>
             {# if first row true end #}
             {% endif %} 
-            {% if row_number == 2 %}                    
+            {% if row_number == 2 %}
+
+
+            <div class="d-flex justify-content-center">
+                <p style="width: 280px; max-width: 100%; font-size: .85rem; color: #aaa;" class="border-start border-end pb-4 ps-4 pe-4 rounded-5">
+                    <br>
+                    <strong style="font-size: 1.1rem">😎 Binfluencer</strong> /bɪnflʊənsə/: 
+                    <br>
+                    The person on your street who always puts their wheelie bins out first on bin day, and the rest of the neighbours follow.
+                </p>
+            </div>
+
             <div class="pt-5 ps-3 ps-lg-5 rounded-top-5">
                 <h2 class="pt-2" id="future-collections">
-                Future collections:
+                {% if "now" | date("m") == 10 %}🎃 {% endif %}{% if "now" | date("m") == 12 %}🎅 {% endif %}Subsequent collections:
                 </h2>
             </div>
             {% endif %}
@@ -213,34 +258,38 @@
                             {{ key | date("l,") }}
                             <br /><span class="bindate fs-4">{{ key }}</span>
                             </h2>
-                        {% for value in weather %}
-                            {% if value.wdate == key %}
+                {% if first_row == true %}
+                    {% set break = false %}
+                    {% for value in weather %}
+                        {% if value.wdate == key and not break %}
                             {% set upcoming = key %}
-                                <a href="javascript:void();" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom" style="text-decoration: none">
-                                    <div class="card weather rb_corner rounded-3">
-                                        <div class="card-header weather-header tl_corner text-center">
-                                            <img src="https://bins.b-cdn.net/bins-main/img/{{ value.code }}.png" style="margin-bottom: 5px; margin-top: -10px; width: 24px; height: 24px;" loading="lazy" />
-                                            <span class="fs-6">{{ value.temperature }}&deg;C</span>
-                                            <br /><span class="weatherinfo small">{{ value.info }}</span>
-                                            <br /><span class="small">{{ value.precipitation }}: {{ value.probability }}%
-                                            <br />wind: {{ value.wind }}mph</span>
-                                        </div>
+                            <a href="javascript:void();" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom" style="text-decoration: none">
+                                <div class="card weather rb_corner rounded-3">
+                                    <div class="card-header weather-header tl_corner text-center">
+                                        <img src="https://bins.b-cdn.net/bins-main/img/{{ value.code }}.png" style="margin-bottom: 5px; margin-top: -10px; width: 24px; height: 24px;" loading="lazy" />
+                                        <span class="fs-6">{{ value.temperature }}&deg;C</span>
+                                        <br /><span class="weatherinfo small">{{ value.info }}</span>
+                                        <br /><span class="small">{{ value.precipitation }}: {{ value.probability }}%
+                                        <br />wind: {{ value.wind }}mph</span>
                                     </div>
-                                </a>
-                            {% endif %}
-                        {% endfor %}
+                                </div>
+                            </a>
+                            {% set break = true %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
                         </div>
                     </div>
-            
+                    
                     <div class="col col-md-auto">
                         <div class="h-100 p-lg-5 rounded-3 float-end">
                         {% if value.1 != false %}
                             <a href="javascript:void()" data-bs-toggle="modal" data-bs-target="#{{ value.1 }}-modal">
                                 <figure class="figure float-end">
                                     <img src="https://bins.b-cdn.net/bins-main/img/{{ value.1 }}-1.png" class="bin figure-img img-fluid"
-                                    onmouseover="this.src='https://bins.b-cdn.net/bins-main/img/{{ value.1 }}-2.png'"
+                                    onmouseover="this.src='https://bins.b-cdn.net/bins-main/img/{% if "now" | date("m") == 10 %}halloween/{% endif %}{{ value.1 }}-2.png'"
                                     onmouseout="this.src='https://bins.b-cdn.net/bins-main/img/{{ value.1 }}-1.png'"
-                                    ontouchstart="this.src='https://bins.b-cdn.net/bins-main/img/{{ value.1 }}-2.png'"
+                                    ontouchstart="this.src='https://bins.b-cdn.net/bins-main/img/{% if "now" | date("m") == 10 %}halloween/{% endif %}{{ value.1 }}-2.png', {passive: true}"
                                     ontouchend="this.src='https://bins.b-cdn.net/bins-main/img/{{ value.1 }}-1.png'"
                                     alt="{{ value.1 }}" {% if first_row == false %}loading="lazy"{% endif %}
                                     />
@@ -256,9 +305,9 @@
                             <a href="javascript:void()" data-bs-toggle="modal" data-bs-target="#{{ value.0 }}-modal">
                                 <figure class="figure float-end">
                                     <img src="https://bins.b-cdn.net/bins-main/img/{{ value.0 }}-1.png" class="bin figure-img img-fluid"
-                                    onmouseover="this.src='https://bins.b-cdn.net/bins-main/img/{{ value.0 }}-2.png'"
+                                    onmouseover="this.src='https://bins.b-cdn.net/bins-main/img/{% if "now" | date("m") == 10 %}halloween/{% endif %}{{ value.0 }}-2.png'"
                                     onmouseout="this.src='https://bins.b-cdn.net/bins-main/img/{{ value.0 }}-1.png'"
-                                    ontouchstart="this.src='https://bins.b-cdn.net/bins-main/img/{{ value.0 }}-2.png'"
+                                    ontouchstart="this.src='https://bins.b-cdn.net/bins-main/img/{% if "now" | date("m") == 10 %}halloween/{% endif %}{{ value.0 }}-2.png', {passive: true}"
                                     ontouchend="this.src='https://bins.b-cdn.net/bins-main/img/{{ value.0 }}-1.png'"
                                     alt="{{ value.0 }}" {% if first_row == false %}loading="lazy"{% endif %} 
                                     />
@@ -304,9 +353,8 @@
                     </div>
                     <div class="col-7 col-md-5 year-column">
                         <select class="form-control year" name="year" id="year" onchange="jump()">
-                            <option value=2023>2023</option>
-                            <option value=2024>2024</option>
                             <option value=2025>2025</option>
+                            <option value=2026>2026</option>
                         </select>
                     </div>
                 </div>
@@ -340,8 +388,8 @@
                     <th>Wed</th>
                     <th>Thu</th>
                     <th>Fri</th>
-                    <th>Sat</th>
-                    <th>Sun</th>
+                    <th><span class="weekend">Sat</span></th>
+                    <th><span class="weekend">Sun</span></th>
                 </tr>
                 </thead>
 
@@ -349,6 +397,10 @@
 
                 </tbody>
             </table>
+
+            <div class="text-center">
+                <p><a class="linear-wipe underscore-style" href="{{ ad_link }}">{{ ad_text | raw }}</a></p>
+            </div>
             
         </div>
 
@@ -503,5 +555,4 @@ document.addEventListener("DOMContentLoaded", function(){
 })
 </script>
 
-<script src="https://bins.b-cdn.net/js/bins.js?v=12" defer></script>
 {% endblock %}

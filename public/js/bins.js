@@ -130,9 +130,9 @@ document.getElementById("bin-logo").innerHTML = document.getElementById("logo-re
 document.getElementById("logo-replace").style.display = 'none'
 
 //calendar
-let yearCeiling = 2026
-let yearFloor = 2023
-let monthFloor = 11
+let yearCeiling = 2027
+let yearFloor = 2025
+let monthFloor = 1 //1-12
 
 let today = new Date()
 let currentMonth = today.getMonth()
@@ -226,7 +226,11 @@ function showCalendar(month, year) {
             else {
                 let cell = document.createElement("td")
                 let cellText = document.createTextNode(date)
-                cell.appendChild(cellText)
+                    
+                if (j >= 5) 
+                    cell.innerHTML = `<span class="weekend">${date}</span>`
+                else
+                    cell.appendChild(cellText)
                 
                 if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
                     cell.classList.add("today")
