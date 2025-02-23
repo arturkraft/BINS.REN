@@ -80,6 +80,16 @@ if("serviceWorker" in navigator) {
 
             {% if first_row == true %}
 
+            {% if notice is empty %}
+            <!-- notice empty -->
+            {% else %}
+<div class="d-flex justify-content-center">
+    <div class="alert alert-warning border-start border-end ps-4 pe-4 rounded-5" role="alert">
+        {{ notice }}
+    </div>
+</div>
+            {% endif %}
+
 <ul class="nav nav-pills mb-3 align-items-center justify-content-center" id="tabs-ul" role="tablist">
     <li>
         <div id="logo-replace">
@@ -235,16 +245,14 @@ ul {
             {% endif %} 
             {% if row_number == 2 %}
 
-
-            <div class="d-flex justify-content-center">
-                <p style="width: 280px; max-width: 100%; font-size: .85rem; color: #aaa;" class="border-start border-end pb-4 ps-4 pe-4 rounded-5">
+            <div id="pwa-box" class="d-flex justify-content-center d-none">
+                <p style="max-width: 100%; font-size: .85rem; color: #aaa; flex-direction: column" class="border-start border-end pb-4 ps-4 pe-4 rounded-5 d-inline-flex">
                     <br>
-                    <strong style="font-size: 1.1rem">😎 Binfluencer</strong> /bɪnflʊənsə/: 
+                    <button id="install" class="btn btn-success btn-lg btn-block mx-auto">👍 Install {{ location }} Bin App</button>
                     <br>
-                    The person on your street who always puts their wheelie bins out first on bin day, and the rest of the neighbours follow.
+                    This web app works better when it's installed directly on your device, it has more functionality and it works offline.<br>It's safe and secure.
                 </p>
             </div>
-
             <div class="pt-5 ps-3 ps-lg-5 rounded-top-5">
                 <h2 class="pt-2" id="future-collections">
                 {% if "now" | date("m") == 10 %}🎃 {% endif %}{% if "now" | date("m") == 12 %}🎅 {% endif %}Subsequent collections:
@@ -552,6 +560,28 @@ document.addEventListener("DOMContentLoaded", function(){
   brandName: "Bins.ren/{{ location_string }}",
   fontFamily: "Helvetica, Arial, sans-serif"
   })
+})
+
+let installPrompt = null
+const installButton = document.querySelector("#install")
+const installWrapper = document.getElementById("pwa-box")
+
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault()
+  installPrompt = event
+  installButton.removeAttribute("hidden")
+  installWrapper.classList.remove("d-none")
+})
+
+installButton.addEventListener("click", async () => {
+  if (!installPrompt) {
+    return;
+  }
+  const result = await installPrompt.prompt()
+  console.log(`Install prompt was: ${result.outcome}`)
+  installPrompt = null
+  installButton.setAttribute("hidden", "")
+  installWrapper.classList.add("d-none")
 })
 </script>
 

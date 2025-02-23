@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %} Privacy Policy {% endblock %}
+{% block jscss %}
+{% include "scripts_styles_online.html" %}
+    <script>
+    {% if ends_with == 0 %}
+    window.history.replaceState(null, document.title, window.location.pathname+'/')
+    {% endif %}
+    </script>
+{% endblock %}
+
+{% block body %}
+
+
+
+        <h1>Privacy Policy for bins.ren</h1>
+        <p><strong>Effective Date:</strong> 01 February 2025</p>
+
+
+    <section>
+        <h2>1. Data Collection and Usage</h2>
+        <p>bins.ren does not collect, store, or share any personal information. The app simply provides information regarding when and which bins are scheduled for collection based on your selected location.</p>
+        <p>We do not ask for or use any personally identifiable information such as your name, email, or location. All data displayed within the app is fetched from external sources and is used only for the purpose of showing collection dates and bin types.</p>
+    </section>
+
+    <section>
+        <h2>2. Analytics</h2>
+        <p>bins.ren does not use analytics services or track user behavior. We do not gather any data about how you use the app or track your activity within the app.</p>
+    </section>
+
+    <section>
+        <h2>3. Third-Party Services</h2>
+        <p>The app does not rely on any third-party services that collect or process your data. We do not embed any advertisements, tracking tools, or analytics.</p>
+    </section>
+
+    <section>
+        <h2>4. Security</h2>
+        <p>Since the app does not collect any data, there is no personal data at risk. Any data displayed is sourced externally and does not involve any storage or processing within the app.</p>
+    </section>
+
+    <section>
+        <h2>5. Contact Information</h2>
+        <p>If you have any questions or concerns about this privacy policy, feel free to reach out to us at:</p>
+        <p><strong>Contact Email:</strong> <a href="mailto:contact@bins.ren">contact@bins.ren</a></p>
+    </section>
+
+    <section>
+        <h2>6. Changes to This Privacy Policy</h2>
+        <p>We reserve the right to update or modify this privacy policy at any time. Any changes will be reflected in the updated version of this document.</p>
+    </section>
+
+
+
+{% endblock %}

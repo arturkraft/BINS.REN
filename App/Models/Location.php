@@ -82,7 +82,7 @@ class Location extends \Core\Model
     }
 
     /**
-     * Get all posts as an associative array
+     * Get all bin dates as an associative array
      *
      * @return array
      */

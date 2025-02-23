@@ -73,6 +73,8 @@ class Config
         "houston",
         "howwood",
         "kilbarchan",
+        "langbank",
+        "napiergrove",
         "weirswynd"
     ];
 
@@ -90,7 +92,9 @@ class Config
         "houston" => "Houston",
         "howwood" => "Howwood",
         "kilbarchan" => "Kilbarchan",
+        "langbank" => "Langbank",
         "linwood" => "Linwood",
+        "napiergrove" => "Napier Grove",
         "weirswynd" => "Weirs Wynd"
     ];
 
